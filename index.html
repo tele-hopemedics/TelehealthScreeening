@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hope Medics Telehealth — Eligibility & Booking (Concept Demo)</title>
+<style>
+  :root{
+    --navy:#22386b; --navy2:#2c3e5d; --slate:#3f4f70; --gold:#eea836;
+    --blue:#3e6fb5; --blue-d:#335c99; --blue-tint:#e9effa;
+    --ink:#2c3a55; --muted:#61708f;
+    --bg:#f1f2fb; --bg2:#eceaf7; --card:#ffffff; --border:#e3e7f3;
+    --amber:#8a5e11; --amber-t:#fbf3e0; --amber-b:#ecd9a8;
+    --red:#c0392b; --red-t:#fbeceb; --red-b:#f0cfcc;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(34,56,107,.06), 0 10px 34px rgba(34,56,107,.08);
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:linear-gradient(180deg,#f4f4fc 0%,#ece9f6 100%);background-attachment:fixed;
+    color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:var(--blue-d)}
+  .demo-strip{background:var(--navy);color:#dbe4f5;font-size:12.5px;text-align:center;padding:7px 14px}
+  .demo-strip b{color:#fff;font-weight:600}
+
+  header.site{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    max-width:980px;margin:0 auto;padding:18px 22px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:42px;height:42px;flex:none}
+  .wm{line-height:1}
+  .wm .n{font-weight:800;font-size:20px;letter-spacing:-.02em}
+  .wm .n .h{color:var(--navy)} .wm .n .m{color:var(--gold)}
+  .wm .tag{font-size:10.5px;color:var(--blue);font-weight:700;letter-spacing:.02em;margin-top:2px}
+  .th-pill{display:inline-block;margin-left:8px;background:var(--blue-tint);color:var(--blue-d);
+    font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:999px;vertical-align:middle;letter-spacing:.03em}
+  .callus{font-size:13px;color:var(--muted);text-align:right}
+  .callus a{font-weight:700;text-decoration:none;color:var(--navy);white-space:nowrap}
+
+  main{max-width:680px;margin:0 auto;padding:8px 22px 90px}
+
+  .hero{position:relative;text-align:center;padding:30px 8px 6px;overflow:hidden}
+  .hero:before{content:"";position:absolute;inset:-40px;z-index:0;
+    background:
+      radial-gradient(60px 60px at 15% 30%,rgba(255,255,255,.9),transparent 70%),
+      radial-gradient(90px 90px at 82% 20%,rgba(255,255,255,.75),transparent 70%),
+      radial-gradient(50px 50px at 70% 70%,rgba(255,255,255,.7),transparent 70%),
+      radial-gradient(40px 40px at 30% 75%,rgba(255,255,255,.7),transparent 70%);
+    pointer-events:none}
+  .hero>*{position:relative;z-index:1}
+  .hero h1{font-size:31px;line-height:1.14;letter-spacing:-.02em;margin:.15em 0 .35em;color:var(--navy2)}
+  .hero h1 .light{color:var(--slate);font-weight:600}
+  .hero p.lead{font-size:16.5px;color:var(--muted);max-width:520px;margin:0 auto 22px}
+  .badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px}
+  .badge{display:flex;align-items:center;gap:8px;border-radius:999px;padding:8px 15px 8px 8px;font-size:13px;font-weight:600;color:var(--navy2)}
+  .badge .bi{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;flex:none}
+  .badge .bi svg{width:15px;height:15px}
+  .b-lav{background:#efeaf8} .b-lav .bi{background:#cfc4ee;color:#5a4aa3}
+  .b-blue{background:#e6eef9} .b-blue .bi{background:#c2d6f2;color:#2f5da5}
+  .b-mint{background:#e8f3ec} .b-mint .bi{background:#bfe2cd;color:#2f8a63}
+
+  .card{background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);
+    padding:26px 26px 24px;margin-top:22px}
+  .stepper{display:flex;align-items:center;gap:8px;margin-bottom:20px}
+  .stepper .dot{flex:1;height:6px;border-radius:999px;background:#dfe4f2}
+  .stepper .dot.on{background:var(--blue)} .stepper .dot.done{background:var(--navy)}
+  .eyebrow{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue-d);margin:0 0 4px}
+  .card h2{font-size:21px;letter-spacing:-.01em;margin:0 0 4px;color:var(--navy2)}
+  .card .hint{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .grouplabel{font-weight:700;font-size:14.5px;margin:18px 0 10px;color:var(--navy2)}
+  .grouplabel.first{margin-top:4px}
+  .serious-note{font-size:12.5px;color:var(--amber);background:var(--amber-t);border:1px solid var(--amber-b);
+    border-radius:10px;padding:8px 12px;margin:0 0 10px}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .tile{border:1.5px solid var(--border);border-radius:var(--radius);background:#fff;padding:16px 12px;text-align:center;
+    cursor:pointer;transition:border-color .15s,background .15s,transform .05s;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:9px}
+  .tile:hover{border-color:var(--blue);background:var(--blue-tint)}
+  .tile:active{transform:translateY(1px)}
+  .tile.sel{border-color:var(--blue);background:var(--blue-tint);box-shadow:0 0 0 3px rgba(62,111,181,.15)}
+  .tile .ic{width:30px;height:30px;color:var(--blue)}
+  .tile .lbl{font-weight:700;font-size:14px;color:var(--navy2)}
+  .tile .ex{font-size:11.5px;color:var(--muted);line-height:1.3}
+
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{display:flex;align-items:flex-start;gap:12px;border:1.5px solid var(--border);border-radius:var(--radius);
+    padding:13px 15px;cursor:pointer;transition:border-color .15s,background .15s;font:inherit;color:inherit;text-align:left;width:100%;background:#fff}
+  .opt:hover{border-color:var(--blue)}
+  .opt.sel{border-color:var(--blue);background:var(--blue-tint)}
+  .opt .mark{width:20px;height:20px;border-radius:6px;border:2px solid #c3cde4;flex:none;margin-top:1px;display:grid;place-items:center}
+  .opt.radio .mark{border-radius:999px}
+  .opt.sel .mark{border-color:var(--blue);background:var(--blue)}
+  .opt .mark svg{width:12px;height:12px;color:#fff;opacity:0}
+  .opt.sel .mark svg{opacity:1}
+  .opt .txt{font-size:14.5px}
+
+  .rowbtns{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px}
+  .btn{appearance:none;border:0;border-radius:999px;padding:12px 24px;font:inherit;font-weight:700;cursor:pointer}
+  .btn-primary{background:var(--blue);color:#fff}
+  .btn-primary:hover{background:var(--blue-d)}
+  .btn-primary[disabled]{background:#adc0dd;cursor:not-allowed}
+  .btn-ghost{background:transparent;color:var(--muted);padding:12px 6px;font-weight:600}
+  .btn-ghost:hover{color:var(--navy2)}
+  .btn-lg{padding:14px 28px;font-size:15.5px}
+
+  .placeholder-note{margin-top:16px;font-size:12px;color:var(--muted);background:#f3f4fb;border:1px dashed var(--border);border-radius:10px;padding:9px 12px}
+
+  .result{text-align:center;padding:8px 4px 2px}
+  .result .rico{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;margin:0 auto 14px}
+  .result h2{font-size:23px;margin:0 0 6px}
+  .result p.msg{color:var(--muted);font-size:15px;max-width:470px;margin:0 auto 18px}
+  .r-ok .rico{background:#e6eef9;color:var(--blue-d)} .r-ok h2{color:var(--navy2)}
+  .r-warn .rico{background:var(--amber-t);color:var(--amber)} .r-warn h2{color:var(--navy2)}
+  .r-urgent .rico{background:var(--red-t);color:var(--red)} .r-urgent h2{color:var(--red)}
+  .altlist{list-style:none;padding:0;margin:0 auto 8px;max-width:450px;text-align:left;display:flex;flex-direction:column;gap:9px}
+  .altlist li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;background:#f7f8fd;border:1px solid var(--border);border-radius:12px;padding:11px 14px}
+  .altlist li svg{width:18px;height:18px;color:var(--blue);flex:none;margin-top:2px}
+  .chosen{display:inline-flex;align-items:center;gap:7px;background:var(--blue-tint);color:var(--blue-d);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:700;margin-bottom:14px}
+  .book{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;border-radius:999px;padding:14px 30px;font-weight:700;font-size:15.5px;margin-top:4px}
+  .book:hover{background:var(--blue-d)}
+  .redirect{font-size:12.5px;color:var(--muted);margin-top:12px}
+  .callbtn{display:inline-block;background:var(--red);color:#fff;text-decoration:none;border-radius:999px;padding:14px 30px;font-weight:800;font-size:16px}
+  .restart{display:block;margin:18px auto 0;background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;text-decoration:underline}
+
+  footer.note{max-width:680px;margin:0 auto;padding:0 22px 44px;color:var(--muted);font-size:12px;text-align:center;line-height:1.6}
+
+  .fab{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:var(--blue);border:0;color:#fff;box-shadow:0 8px 24px rgba(34,56,107,.32);cursor:pointer;display:grid;place-items:center;z-index:40}
+  .fab:hover{background:var(--blue-d)}
+  .fab svg{width:26px;height:26px}
+  .chat{position:fixed;right:20px;bottom:88px;width:340px;max-width:calc(100vw - 40px);height:460px;max-height:calc(100vh - 130px);
+    background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 20px 50px rgba(34,56,107,.24);display:none;flex-direction:column;overflow:hidden;z-index:41}
+  .chat.open{display:flex}
+  .chat .top{background:var(--navy);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:10px}
+  .chat .top .av{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.18);display:grid;place-items:center;flex:none}
+  .chat .top .av svg{width:17px;height:17px}
+  .chat .top .t1{font-weight:700;font-size:14px;line-height:1.15} .chat .top .t2{font-size:11.5px;opacity:.85}
+  .chat .top .x{margin-left:auto;background:none;border:0;color:#fff;cursor:pointer;opacity:.85;font-size:18px;line-height:1}
+  .chat .body{flex:1;overflow-y:auto;padding:14px;background:#f7f8fd;display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:82%;padding:9px 12px;border-radius:13px;font-size:13.5px;line-height:1.5}
+  .msg.bot{background:#fff;border:1px solid var(--border);border-bottom-left-radius:4px;align-self:flex-start}
+  .msg.me{background:var(--blue);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 10px;background:#f7f8fd}
+  .chip{background:#fff;border:1px solid var(--border);color:var(--blue-d);border-radius:999px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer}
+  .chip:hover{border-color:var(--blue);background:var(--blue-tint)}
+  .chat .compose{display:flex;gap:8px;border-top:1px solid var(--border);padding:10px;background:#fff}
+  .chat .compose input{flex:1;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-size:13.5px;outline:none}
+  .chat .compose input:focus{border-color:var(--blue)}
+  .chat .compose button{border:0;background:var(--blue);color:#fff;border-radius:10px;width:40px;cursor:pointer;display:grid;place-items:center}
+  .chat .compose button svg{width:17px;height:17px}
+  .chat .disc{font-size:10.5px;color:var(--muted);text-align:center;padding:6px 10px 9px;background:#fff}
+
+  :focus-visible{outline:3px solid rgba(62,111,181,.45);outline-offset:2px}
+  @media (max-width:560px){.grid{grid-template-columns:repeat(2,1fr)} .hero h1{font-size:26px}}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  .fade{animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="demo-strip"><b>Concept demo</b> — sample symptoms and eligibility rules for review. Not a live service; final criteria are provided by the practice.</div>
+
+<header class="site">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M24 42S6 31 6 18.5C6 12 10.5 8 16 8c3.4 0 6 1.8 8 4.6C26 9.8 28.6 8 32 8c5.5 0 10 4 10 10.5C42 31 24 42 24 42z" fill="#22386b"/>
+      <path d="M24 17v10M19 22h10" stroke="#eea836" stroke-width="3.4" stroke-linecap="round"/>
+    </svg>
+    <div class="wm">
+      <div class="n"><span class="h">Hope</span><span class="m">Medics</span><span class="th-pill">TELEHEALTH</span></div>
+      <div class="tag">Care. Trust. Hope.</div>
+    </div>
+  </div>
+  <div class="callus">Need help now?<br><a href="tel:+61353323507">03 5332 3507</a></div>
+</header>
+
+<main>
+  <section id="s-landing" class="fade">
+    <div class="hero">
+      <h1><span class="light">See a Hope Medics doctor</span><br>from home</h1>
+      <p class="lead">Answer a few quick questions to check if you're eligible for a bulk-billed telehealth appointment, then book in a couple of taps.</p>
+      <button class="btn btn-primary btn-lg" onclick="start()">Check my eligibility</button>
+      <div class="badges">
+        <span class="badge b-lav"><span class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Bulk billing</span>
+        <span class="badge b-blue"><span class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg></span>Open 7 days</span>
+        <span class="badge b-mint"><span class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg></span>Phone &amp; video</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-condition" style="display:none">
+    <div class="card">
+      <div class="stepper"><span class="dot on"></span><span class="dot"></span><span class="dot"></span></div>
+      <p class="eyebrow">Step 1 of 3</p>
+      <h2>What do you need help with today?</h2>
+      <p class="hint">Choose the option that best matches your main concern.</p>
+      <div class="grid" id="conditionGrid"></div>
+      <div class="rowbtns">
+        <button class="btn btn-ghost" onclick="goLanding()">Back</button>
+        <button class="btn btn-primary" id="c-next" disabled onclick="loadSafety()">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-safety" style="display:none">
+    <div class="card">
+      <div class="stepper"><span class="dot done"></span><span class="dot on"></span><span class="dot"></span></div>
+      <p class="eyebrow">Step 2 of 3</p>
+      <h2 id="safetyTitle">Tell us about your symptoms</h2>
+      <p class="hint">This helps route you to the right care. Sample symptoms shown for the demo.</p>
+      <p class="grouplabel first">Which of these are you experiencing?</p>
+      <div class="opts" id="symptomList"></div>
+      <p class="grouplabel">Any of these more serious signs?</p>
+      <p class="serious-note">If any of these apply, we'll point you to urgent care instead of booking.</p>
+      <div class="opts" id="redflagList"></div>
+      <div class="rowbtns">
+        <button class="btn btn-ghost" onclick="show('condition')">Back</button>
+        <button class="btn btn-primary" id="s-next" disabled onclick="afterSafety()">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-eligibility" style="display:none">
+    <div class="card">
+      <div class="stepper"><span class="dot done"></span><span class="dot done"></span><span class="dot on"></span></div>
+      <p class="eyebrow">Step 3 of 3</p>
+      <h2>A few details to check Medicare eligibility</h2>
+      <p class="hint">Bulk-billed telehealth has specific Medicare rules. Your answers stay on this page.</p>
+
+      <div id="q-medicare">
+        <p class="grouplabel first">Do you have a valid Medicare card?</p>
+        <div class="opts">
+          <button class="opt radio" onclick="pick('medicare',true,this)"><span class="mark"></span><span class="txt">Yes</span></button>
+          <button class="opt radio" onclick="pick('medicare',false,this)"><span class="mark"></span><span class="txt">No</span></button>
+        </div>
+      </div>
+
+      <div id="q-seen" style="display:none">
+        <p class="grouplabel">Have you had a face-to-face appointment at Hope Medics in the last 12 months?</p>
+        <div class="opts">
+          <button class="opt radio" onclick="pick('seen',true,this)"><span class="mark"></span><span class="txt">Yes</span></button>
+          <button class="opt radio" onclick="pick('seen',false,this)"><span class="mark"></span><span class="txt">No / not sure</span></button>
+        </div>
+      </div>
+
+      <div id="q-exempt" style="display:none">
+        <p class="grouplabel">Do any of these apply to you?</p>
+        <div class="opts" id="exemptOpts"></div>
+      </div>
+
+      <div class="placeholder-note">Demo logic: eligibility mirrors the public Medicare telehealth rules (a recent face-to-face visit, or a listed exemption). The practice provides the final criteria.</div>
+
+      <div class="rowbtns">
+        <button class="btn btn-ghost" onclick="show('safety')">Back</button>
+        <button class="btn btn-primary" id="e-next" disabled onclick="evaluateResult()">See my result</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-result" style="display:none"><div class="card" id="resultCard"></div></section>
+</main>
+
+<footer class="note">
+  This is a concept demonstration for internal review only. It provides general information, is not medical advice, and stores no patient data.<br>
+  In an emergency call <strong>000</strong>. For non-urgent health advice, call healthdirect on <strong>1800 022 222</strong>.
+</footer>
+
+<button class="fab" id="fab" aria-label="Open help assistant" onclick="toggleChat()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7A8.38 8.38 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5z"/></svg>
+</button>
+<div class="chat" id="chat" role="dialog" aria-label="Help assistant">
+  <div class="top">
+    <span class="av"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a2 2 0 0 1 2 2v1h1a4 4 0 0 1 4 4v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4V9a4 4 0 0 1 4-4h1V4a2 2 0 0 1 2-2z"/><path d="M9 12h.01M15 12h.01"/></svg></span>
+    <div><div class="t1">Telehealth assistant</div><div class="t2">Answers general questions</div></div>
+    <button class="x" aria-label="Close" onclick="toggleChat()">&times;</button>
+  </div>
+  <div class="body" id="chatBody"></div>
+  <div class="chips" id="chatChips"></div>
+  <div class="compose">
+    <input id="chatInput" type="text" placeholder="Type a question..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button aria-label="Send" onclick="sendChat()"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+  </div>
+  <div class="disc">Demo assistant &middot; general information only, not medical advice</div>
+</div>
+
+<script>
+  var HOTDOC = "https://www.hotdoc.com.au/medical-centres/wendouree-VIC-3355/hope-medics/doctors";
+  var tick = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+  function el(t,c){var e=document.createElement(t);if(c)e.className=c;return e;}
+  function byId(id){return document.getElementById(id);}
+  function scrollTop(){try{window.scrollTo(0,0);}catch(e){}}
+
+  var state={condition:null, redflag:false, medicare:null, seen:null, exempt:false};
+
+  var conditions=[
+    {id:"coldflu", label:"Cold & flu", ex:"Cough, sore throat, fever",
+     icon:'<path d="M14 14.76V5a2 2 0 0 0-4 0v9.76a4 4 0 1 0 4 0z"/><path d="M12 15.5v-6"/>',
+     symptoms:["Runny or blocked nose","Sore throat","Cough","Fever or chills","Aches and tiredness"],
+     redflags:["Difficulty breathing or shortness of breath","Chest pain or tightness","Coughing up blood","Confusion or very drowsy"]},
+    {id:"gastro", label:"Gastro", ex:"Nausea, vomiting, diarrhoea",
+     icon:'<circle cx="12" cy="12" r="9"/><path d="M7 12c1.4-2 3.2-2 5 0s3.6 2 5 0"/>',
+     symptoms:["Nausea or vomiting","Diarrhoea","Stomach cramps","Mild fever","Loss of appetite"],
+     redflags:["Blood in vomit or stools","Not passing urine, or very dizzy (dehydration)","Severe or constant tummy pain"]},
+    {id:"rash", label:"Skin rashes", ex:"Hives, irritation, spots",
+     icon:'<rect x="4" y="4" width="16" height="16" rx="5"/><path d="M9 9h.01M15 9h.01M9.5 15h.01M14.5 14h.01M12 12h.01"/>',
+     symptoms:["Itchy rash or hives","Redness or irritation","Dry or flaky patches","Mild swelling"],
+     redflags:["Swelling of face, lips or tongue, or trouble breathing","Rash with a high fever","Purple spots that don't fade when pressed"]},
+    {id:"headache", label:"Headaches", ex:"Migraine, tension pain",
+     icon:'<circle cx="10" cy="12" r="7"/><path d="M18 6l-2.5 4h3L16 15"/>',
+     symptoms:["Throbbing or one-sided pain","Tight, band-like pain","Pain around the sinuses","Sensitivity to light or noise"],
+     redflags:["Sudden, severe 'worst ever' headache","Headache with confusion, weakness or slurred speech","Stiff neck with a fever","New loss of vision"]},
+    {id:"eye", label:"Eye complaints", ex:"Redness, conjunctivitis",
+     icon:'<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/>',
+     symptoms:["Red or bloodshot eye","Itching or watering","Sticky discharge","Gritty or mild irritation"],
+     redflags:["Sudden loss of vision","Severe eye pain","A chemical splash or eye injury"]},
+    {id:"infection", label:"Infections", ex:"UTI, ear, minor infections",
+     icon:'<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M12 9v5M9.5 11.5h5"/>',
+     symptoms:["Burning or frequent urination","Ear pain or a blocked ear","A small, localised skin infection","Mild fever"],
+     redflags:["High fever with shivering or confusion","Spreading redness, warmth and swelling","Severe pain or feeling very unwell"]}
+  ];
+
+  var exemptions=[
+    "Child under 12 months old","Currently experiencing homelessness","An urgent after-hours problem",
+    "Help with quitting smoking","Affected by a declared natural disaster",
+    "A sexual, reproductive or mental-health service","A patient of an Aboriginal Medical Service"
+  ];
+
+  /* condition tiles */
+  var grid=byId("conditionGrid");
+  conditions.forEach(function(c){
+    var b=el("button","tile"); b.type="button";
+    b.innerHTML='<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">'+c.icon+'</svg><span class="lbl">'+c.label+'</span><span class="ex">'+c.ex+'</span>';
+    b.onclick=function(){
+      state.condition=c;
+      Array.prototype.forEach.call(grid.children,function(x){x.classList.remove("sel");});
+      b.classList.add("sel");
+      byId("c-next").disabled=false;
+    };
+    grid.appendChild(b);
+  });
+
+  /* generic multi-select builder */
+  function buildMulti(wrap, items, noneLabel, onChange){
+    wrap.innerHTML="";
+    var chosen=new Set(); var noneBtn=null;
+    function fire(){ onChange({answered:chosen.size>0, hasNone:chosen.has("__none__"), count:chosen.size}); }
+    items.forEach(function(txt,i){
+      var b=el("button","opt"); b.type="button";
+      b.innerHTML='<span class="mark">'+tick+'</span><span class="txt">'+txt+'</span>';
+      b.onclick=function(){
+        if(noneBtn){noneBtn.classList.remove("sel");} chosen.delete("__none__");
+        if(chosen.has(i)){chosen.delete(i);b.classList.remove("sel");}
+        else{chosen.add(i);b.classList.add("sel");}
+        fire();
+      };
+      wrap.appendChild(b);
+    });
+    if(noneLabel){
+      noneBtn=el("button","opt"); noneBtn.type="button";
+      noneBtn.innerHTML='<span class="mark">'+tick+'</span><span class="txt">'+noneLabel+'</span>';
+      noneBtn.onclick=function(){
+        chosen.clear(); Array.prototype.forEach.call(wrap.children,function(x){x.classList.remove("sel");});
+        noneBtn.classList.add("sel"); chosen.add("__none__"); fire();
+      };
+      wrap.appendChild(noneBtn);
+    }
+  }
+
+  /* navigation */
+  var sections=["landing","condition","safety","eligibility","result"];
+  function show(id){
+    sections.forEach(function(s){ byId("s-"+s).style.display=(s===id)?"":"none"; });
+    var sec=byId("s-"+id); sec.classList.remove("fade"); void sec.offsetWidth; sec.classList.add("fade");
+    scrollTop();
+  }
+  function goLanding(){ show("landing"); }
+  function start(){ show("condition"); }
+
+  function loadSafety(){
+    var c=state.condition; if(!c) return;
+    byId("safetyTitle").textContent="Tell us about your "+c.label.toLowerCase();
+    state.redflag=false;
+    buildMulti(byId("symptomList"), c.symptoms, null, function(){});
+    buildMulti(byId("redflagList"), c.redflags, "None of these", function(st){
+      state.redflag = st.answered && !st.hasNone;
+      byId("s-next").disabled = !st.answered;
+    });
+    byId("s-next").disabled=true;
+    show("safety");
+  }
+  function afterSafety(){
+    if(state.redflag){ renderResult("urgent"); show("result"); }
+    else { show("eligibility"); }
+  }
+
+  /* eligibility */
+  function pick(key,val,btn){
+    state[key]=val;
+    var group=btn.parentElement;
+    Array.prototype.forEach.call(group.children,function(x){x.classList.remove("sel");});
+    btn.classList.add("sel");
+    if(key==="medicare"){
+      byId("q-seen").style.display = val ? "" : "none";
+      byId("q-exempt").style.display="none";
+      state.seen=null; state.exempt=false;
+    }
+    if(key==="seen"){
+      byId("q-exempt").style.display = val ? "none" : "";
+      state.exempt=false;
+      if(!val){ buildMulti(byId("exemptOpts"), exemptions, "None of these apply", function(st){
+        state.exempt = st.answered && !st.hasNone; refreshEligNext();
+      }); }
+    }
+    refreshEligNext();
+  }
+  function refreshEligNext(){
+    var ready=false;
+    if(state.medicare===false) ready=true;
+    else if(state.medicare===true && state.seen===true) ready=true;
+    else if(state.medicare===true && state.seen===false) ready=true;
+    byId("e-next").disabled = !ready || (state.medicare===true && state.seen===null);
+  }
+  function evaluateResult(){
+    var eligible = (state.medicare===true && (state.seen===true || state.exempt===true));
+    renderResult(eligible?"ok":"warn");
+    show("result");
+  }
+
+  function iconSpan(c){return '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'+c.icon+'</svg>';}
+  function checkli(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';}
+  function bigIcon(t){
+    var s='<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">';
+    if(t==="check") return s+'<path d="M20 6 9 17l-5-5"/></svg>';
+    if(t==="info") return s+'<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>';
+    return s+'<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg>';
+  }
+  function renderResult(kind){
+    var card=byId("resultCard"); card.className="card";
+    var chosen = state.condition ? '<div class="chosen">'+iconSpan(state.condition)+state.condition.label+'</div>' : "";
+    if(kind==="ok"){
+      card.innerHTML='<div class="result r-ok">'+
+        '<div class="rico">'+bigIcon("check")+'</div>'+chosen+
+        '<h2>You look eligible for bulk-billed telehealth</h2>'+
+        '<p class="msg">Based on your answers you may qualify. The practice confirms your eligibility before the consult.</p>'+
+        '<a class="book" href="'+HOTDOC+'" target="_blank" rel="noopener">Book via HotDoc &rarr;</a>'+
+        '<p class="redirect">You\'ll be taken to HotDoc to choose a time and finish booking.</p>'+
+        '<button class="restart" onclick="restart()">Start over</button></div>';
+    } else if(kind==="warn"){
+      card.innerHTML='<div class="result r-warn">'+
+        '<div class="rico">'+bigIcon("info")+'</div>'+chosen+
+        '<h2>You may not be eligible for bulk-billed telehealth</h2>'+
+        '<p class="msg">Bulk-billed telehealth needs a recent face-to-face visit or a listed exemption. You can still get care:</p>'+
+        '<ul class="altlist">'+
+          '<li>'+checkli()+'<span><strong>Book an in-person appointment</strong> at Hope Medics to get started.</span></li>'+
+          '<li>'+checkli()+'<span><strong>Call the practice</strong> on 03 5332 3507 to talk through options.</span></li>'+
+          '<li>'+checkli()+'<span><strong>Ask about a private telehealth consult</strong> (a fee may apply).</span></li>'+
+        '</ul>'+
+        '<a class="book" href="'+HOTDOC+'" target="_blank" rel="noopener" style="margin-top:14px">Book an appointment &rarr;</a>'+
+        '<button class="restart" onclick="restart()">Start over</button></div>';
+    } else {
+      card.innerHTML='<div class="result r-urgent">'+
+        '<div class="rico">'+bigIcon("alert")+'</div>'+
+        '<h2>Please seek urgent care now</h2>'+
+        '<p class="msg">Some of what you described can need urgent attention, so this service isn\'t the right option right now.</p>'+
+        '<a class="callbtn" href="tel:000">Call 000</a>'+
+        '<p class="msg" style="margin-top:16px">Or go to your nearest emergency department. If you\'re unsure and it\'s not an emergency, call the practice on <strong>03 5332 3507</strong> or healthdirect on <strong>1800 022 222</strong>.</p>'+
+        '<button class="restart" onclick="restart()">Start over</button></div>';
+    }
+  }
+  function restart(){
+    state={condition:null, redflag:false, medicare:null, seen:null, exempt:false};
+    byId("c-next").disabled=true;
+    Array.prototype.forEach.call(grid.children,function(x){x.classList.remove("sel");});
+    byId("q-seen").style.display="none";
+    byId("q-exempt").style.display="none";
+    Array.prototype.forEach.call(document.querySelectorAll("#q-medicare .opt"),function(x){x.classList.remove("sel");});
+    byId("e-next").disabled=true;
+    goLanding();
+  }
+
+  /* FAQ assistant (mock) */
+  var faqs=[
+    {k:["eligib","qualify"],q:"Am I eligible?",a:"This tool checks that for you. In general, bulk-billed telehealth needs a face-to-face visit with the practice in the last 12 months, or a listed exemption. The practice confirms eligibility before your appointment."},
+    {k:["telehealth","video","phone","how work"],q:"What is telehealth?",a:"A telehealth appointment lets you see a Hope Medics doctor by phone or video, without coming into the clinic."},
+    {k:["bulk","cost","pay","price","free"],q:"What does bulk-billed mean?",a:"Bulk-billed means Medicare covers the cost and you pay nothing - if you meet the eligibility rules."},
+    {k:["condition","treat","what can","symptom"],q:"What can I use this for?",a:"Common issues like cold & flu, gastro, skin rashes, headaches, eye complaints and infections. For anything severe or an emergency, call 000."},
+    {k:["book","appointment","hotdoc"],q:"How do I book?",a:"If you're eligible, you'll get a button to book through HotDoc, the practice's booking system."},
+    {k:["data","privacy","store","record"],q:"Is my information stored?",a:"No. Your answers stay on this page and aren't saved by this tool."}
+  ];
+  var chatBody=byId("chatBody"), chatChips=byId("chatChips"), chatInit=false;
+  function botSay(t){var d=el("div","msg bot");d.innerHTML=t;chatBody.appendChild(d);chatBody.scrollTop=chatBody.scrollHeight;}
+  function meSay(t){var d=el("div","msg me");d.textContent=t;chatBody.appendChild(d);chatBody.scrollTop=chatBody.scrollHeight;}
+  function toggleChat(){
+    var c=byId("chat"); c.classList.toggle("open");
+    if(c.classList.contains("open") && !chatInit){
+      chatInit=true;
+      botSay("Hi! I can answer general questions about the Hope Medics telehealth service. What would you like to know?");
+      faqs.slice(0,4).forEach(function(f){
+        var ch=el("button","chip");ch.textContent=f.q;
+        ch.onclick=function(){meSay(f.q);setTimeout(function(){botSay(f.a);},250);};
+        chatChips.appendChild(ch);
+      });
+    }
+  }
+  function sendChat(){
+    var inp=byId("chatInput"); var q=inp.value.trim(); if(!q)return;
+    meSay(q); inp.value="";
+    var lc=q.toLowerCase(); var hit=null;
+    for(var i=0;i<faqs.length;i++){ if(faqs[i].k.some(function(w){return lc.indexOf(w)>-1;})){hit=faqs[i];break;} }
+    setTimeout(function(){
+      if(/emergenc|000|chest pain|breath/.test(lc)) botSay("If this is an emergency, call <strong>000</strong> now. This service isn't for emergencies.");
+      else if(hit) botSay(hit.a);
+      else botSay("I can help with general questions about this service - try a suggestion above, or call the practice on <strong>03 5332 3507</strong>.");
+    },250);
+  }
+</script>
+</body>
+</html>
