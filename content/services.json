@@ -5,7 +5,7 @@
       "ex": "Repeat or new prescription",
       "requiresAck": true,
       "ackTitle": "Before you continue — prescriptions",
-      "ackText": "We do not prescribe medications of addiction or restricted medicines, including S4 and S8 medications.\n\nThis includes (but is not limited to) strong pain medications such as <strong>Panadeine Forte, Endone, Targin, Palexia, Temgesic and Norspan; benzodiazepines; ADHD medications; gabapentinoids such as Lyrica; antipsychotic medications such as quetiapine; and testosterone.</strong>\n\nSome medications may require an assessment before they can be prescribed. The decision to prescribe any medication is made at the discretion of the consulting practitioner based on your clinical circumstances.\n\nPlease do not proceed if you are specifically seeking any of the above or other restricted medicines. We also do not provide multiple repeats simply on request — the number of repeats, if any, is determined by the treating doctor based on your clinical needs.",
+      "ackText": "We do not prescribe medications of addiction or restricted medicines, including S4 and S8 medications.\n\nThis includes (but is not limited to) strong pain medications such as <strong>Panadeine Forte, Endone, Targin, Palexia, Temgesic and Norspan; benzodiazepines; ADHD medications; gabapentinoids such as Lyrica; antipsychotic medications such as quetiapine; and testosterone.</strong>\n\nSome medications may require an assessment before they can be prescribed. The decision to prescribe any medication is made at the discretion of the consulting practitioner based on your clinical circumstances.\n\n<strong>Please do not proceed with a consultation if you are specifically seeking any of the above medications or other restricted medicines.</strong> \n\nPlease also note that we <strong>do not provide multiple repeats simply on request.</strong> The number of repeats, if any, will be determined by the treating doctor based on your clinical needs.",
       "key": "escript",
       "tint": "blue",
       "icon": "<rect x=\"6\" y=\"3\" width=\"12\" height=\"18\" rx=\"2\"/><path d=\"M9 8h6M9 12h6M9 16h3\"/>"
@@ -15,7 +15,7 @@
       "ex": "For work, study or carer's leave",
       "requiresAck": true,
       "ackTitle": "Before you continue — medical certificates",
-      "ackText": "Medical certificates can only be issued for circumstances that are appropriately assessed during your consultation. We do not provide backdated certificates or certificates covering dates before the day of your consultation.\n\nWe also do not provide medical certificates for:\n• Centrelink purposes\n• Cancelling bookings, events or appointments\n• Rescheduling or cancelling travel plans\n• Legal or court-related matters\n\nIf you require a medical certificate, the consulting doctor will determine whether one can be provided based on your consultation and clinical assessment.",
+      "ackText": "Medical certificates can only be issued for circumstances that are appropriately assessed during your consultation. We <strong>do not provide backdated certificates or certificates covering dates before the day of your consultation.</strong>\n\nWe also do not provide medical certificates for:\n• Centrelink purposes\n• Cancelling bookings, events or appointments\n• Rescheduling or cancelling travel plans\n• Legal or court-related matters\n\nIf you require a medical certificate, the consulting doctor will determine whether one can be provided based on your consultation and clinical assessment.",
       "key": "medcert",
       "tint": "gold",
       "icon": "<path d=\"M6 3h9l3 3v15H6z\"/><path d=\"M9 12l2 2 4-4\"/>"
@@ -25,7 +25,7 @@
       "ex": "To a private specialist",
       "requiresAck": true,
       "ackTitle": "Before you continue — referral letters",
-      "ackText": "Our telehealth service provides referral letters to private specialists only. We do not provide referral letters to public hospitals through this service.\n\nIf you require an urgent assessment at a public hospital, you should attend the appropriate emergency department or contact the relevant health service directly.",
+      "ackText": "Our telehealth service provides referral letters to <strong>private specialists only.</strong> We do not provide referral letters to public hospitals through this service.\n\nIf you require an urgent assessment at a public hospital, you should attend the appropriate emergency department or contact the relevant health service directly.",
       "key": "referral",
       "tint": "green",
       "icon": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"M3 7l9 6 9-6\"/>"
