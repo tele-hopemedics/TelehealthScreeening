@@ -1,0 +1,32 @@
+# Sveltia CMS config  ->  lives at  /admin/config.yml
+backend:
+  name: github
+  repo: tele-hopemedics/TelehealthScreeening   # <-- your GitHub owner/repo
+  branch: main                                  # <-- the branch GitHub Pages builds from
+
+media_folder: assets/uploads
+public_folder: assets/uploads
+
+collections:
+  - name: screening
+    label: Screening content
+    files:
+      - name: services
+        label: Services & acknowledgements
+        file: content/services.json
+        format: json
+        fields:
+          - name: services
+            label: Services
+            label_singular: Service
+            widget: list
+            summary: '{{fields.label}}'
+            fields:
+              - { name: label, label: Label, widget: string }
+              - { name: ex, label: Short description, widget: string, required: false }
+              - { name: requiresAck, label: "Requires 'I understand' notice?", widget: boolean, default: false }
+              - { name: ackTitle, label: Notice title, widget: string, required: false }
+              - { name: ackText, label: Notice text, widget: text, required: false }
+              - { name: key, label: "Key (do not change)", widget: string, hint: "internal id; keep as-is" }
+              - { name: tint, label: Icon colour, widget: select, options: [blue, gold, green, navy], default: blue }
+              - { name: icon, label: "Icon SVG path (advanced)", widget: text, required: false, hint: "leave as-is unless changing the icon" }
