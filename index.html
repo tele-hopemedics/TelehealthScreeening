@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hope Medics Telehealth — Screening (Prototype v2)</title>
+<style>
+  :root{
+    --navy:#22386b; --navy2:#2c3e5d; --slate:#3f4f70; --gold:#eea836;
+    --blue:#3e6fb5; --blue-d:#335c99; --blue-tint:#e9effa;
+    --ink:#2c3a55; --muted:#61708f;
+    --card:#ffffff; --border:#e6e9f4;
+    --amber:#8a5e11; --amber-t:#fbf3e0; --amber-b:#ecd9a8;
+    --green:#1e7d63; --green-t:#e4f4ee;
+    --red:#c0392b; --red-t:#fbeceb;
+    --radius:18px; --shadow:0 1px 2px rgba(34,56,107,.05),0 12px 30px rgba(34,56,107,.06);
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box} html,body{margin:0}
+  body{background:linear-gradient(180deg,#f5f5fc,#eeecf7) fixed;color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+  .demo-strip{background:var(--navy);color:#dbe4f5;font-size:12.5px;text-align:center;padding:7px 14px}
+  .demo-strip b{color:#fff}
+  header.site{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:900px;margin:0 auto;padding:18px 22px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:40px;height:40px;flex:none}
+  .wm .n{font-weight:800;font-size:19px;letter-spacing:-.02em}
+  .wm .n .h{color:var(--navy)} .wm .n .m{color:var(--gold)}
+  .wm .tag{font-size:10px;color:var(--blue);font-weight:700;margin-top:2px}
+  .callus{font-size:13px;color:var(--muted);text-align:right}
+  .callus a{font-weight:700;text-decoration:none;color:var(--navy)}
+  main{max-width:640px;margin:0 auto;padding:6px 22px 90px}
+
+  /* HOME */
+  .home-head{padding:20px 4px 2px}
+  .home-head h1{font-size:30px;line-height:1.14;letter-spacing:-.02em;margin:0 0 6px;color:var(--navy2)}
+  .home-head p{font-size:15.5px;color:var(--muted);margin:0;max-width:480px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px}
+  .tile{border:1px solid var(--border);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow);
+    padding:24px 16px 20px;text-align:center;cursor:pointer;transition:transform .08s, box-shadow .15s, border-color .15s;
+    font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center}
+  .tile:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(34,56,107,.10),0 16px 40px rgba(34,56,107,.10);border-color:#d7ddee}
+  .tile:active{transform:translateY(0)}
+  .chip{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;margin-bottom:14px}
+  .chip svg{width:28px;height:28px}
+  .chip-blue{background:var(--blue-tint);color:var(--blue-d)}
+  .chip-gold{background:#fbf1dd;color:#a9761a}
+  .chip-green{background:var(--green-t);color:var(--green)}
+  .chip-navy{background:#e7eaf3;color:var(--navy)}
+  .tile .lbl{font-weight:700;font-size:15.5px;color:var(--navy2)}
+  .tile .ex{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .tile .req{margin-top:10px;font-size:10.5px;font-weight:700;color:var(--amber);background:var(--amber-t);border-radius:999px;padding:2px 9px}
+  .reassure{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:22px}
+  .reassure span{font-size:12px;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:999px;padding:5px 12px}
+
+  /* CARDS (inner steps) */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 26px 24px;margin-top:20px}
+  .prog{display:flex;gap:8px;margin-bottom:18px}
+  .prog i{flex:1;height:6px;border-radius:999px;background:#e0e4f1}
+  .prog i.on{background:var(--blue)} .prog i.done{background:var(--navy)}
+  .eyebrow{font-size:12px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--blue-d);margin:0 0 4px}
+  .card h2{font-size:21px;letter-spacing:-.01em;margin:0 0 4px;color:var(--navy2)}
+  .card .hint{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .grouplabel{font-weight:700;font-size:14.5px;margin:4px 0 10px;color:var(--navy2)}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{display:flex;align-items:flex-start;gap:12px;border:1.5px solid var(--border);border-radius:14px;padding:13px 15px;cursor:pointer;transition:.15s;font:inherit;color:inherit;text-align:left;width:100%;background:#fff}
+  .opt:hover{border-color:var(--blue)} .opt.sel{border-color:var(--blue);background:var(--blue-tint)}
+  .opt .mark{width:20px;height:20px;border-radius:999px;border:2px solid #c3cde4;flex:none;margin-top:1px;display:grid;place-items:center}
+  .opt.sel .mark{border-color:var(--blue);background:var(--blue)}
+  .opt .mark svg{width:12px;height:12px;color:#fff;opacity:0} .opt.sel .mark svg{opacity:1}
+  .opt .txt{font-size:14.5px}
+  .ackbox{border:1px solid var(--amber-b);background:var(--amber-t);border-radius:14px;padding:16px 18px;font-size:13.5px;color:#5a4711;line-height:1.6;max-height:280px;overflow:auto;white-space:pre-line}
+  .ackcheck{display:flex;align-items:center;gap:10px;margin-top:16px;cursor:pointer;font-weight:600;font-size:14.5px;color:var(--navy2)}
+  .ackcheck input{width:18px;height:18px;accent-color:var(--blue)}
+  .disaster{margin-top:12px;border:1px dashed var(--border);border-radius:14px;padding:14px;background:#f7f8fd;display:none}
+  .disaster.show{display:block}
+  .disaster .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+  .disaster input{flex:1;min-width:130px;border:1px solid var(--border);border-radius:10px;padding:10px 12px;font:inherit;font-size:14px;outline:none}
+  .disaster input:focus{border-color:var(--blue)}
+  .dhint{font-size:11.5px;color:var(--muted);margin-top:8px}
+  .dresult{margin-top:10px;font-size:13.5px;border-radius:10px;padding:10px 12px;display:none}
+  .dresult.ok{display:block;background:var(--green-t);color:var(--green);border:1px solid #bfe2d2}
+  .dresult.no{display:block;background:var(--amber-t);color:var(--amber);border:1px solid var(--amber-b)}
+  .rowbtns{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px}
+  .btn{appearance:none;border:0;border-radius:999px;padding:12px 24px;font:inherit;font-weight:700;cursor:pointer}
+  .btn-primary{background:var(--blue);color:#fff} .btn-primary:hover{background:var(--blue-d)}
+  .btn-primary[disabled]{background:#adc0dd;cursor:not-allowed}
+  .btn-ghost{background:transparent;color:var(--muted);padding:12px 6px;font-weight:600}
+  .btn-sm{padding:9px 16px;font-size:13.5px}
+  .note{margin-top:16px;font-size:12px;color:var(--muted);background:#f4f4fb;border:1px dashed var(--border);border-radius:10px;padding:9px 12px}
+  .result{text-align:center;padding:8px 4px 2px}
+  .result .rico{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;margin:0 auto 14px}
+  .result h2{font-size:22px;margin:0 0 6px} .result p.msg{color:var(--muted);font-size:15px;max-width:470px;margin:0 auto 18px}
+  .r-ok .rico{background:var(--green-t);color:var(--green)} .r-ok h2{color:var(--navy2)}
+  .r-maybe .rico{background:var(--blue-tint);color:var(--blue-d)} .r-maybe h2{color:var(--navy2)}
+  .r-warn .rico{background:var(--amber-t);color:var(--amber)} .r-warn h2{color:var(--navy2)}
+  .rchip{display:inline-flex;align-items:center;gap:7px;background:var(--blue-tint);color:var(--blue-d);border-radius:999px;padding:4px 12px;font-size:12.5px;font-weight:700;margin-bottom:14px}
+  .altlist{list-style:none;padding:0;margin:0 auto 8px;max-width:440px;text-align:left;display:flex;flex-direction:column;gap:9px}
+  .altlist li{display:flex;gap:11px;align-items:flex-start;font-size:14.5px;background:#f7f8fd;border:1px solid var(--border);border-radius:12px;padding:11px 14px}
+  .altlist li svg{width:18px;height:18px;color:var(--blue);flex:none;margin-top:2px}
+  .book{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;border-radius:999px;padding:14px 30px;font-weight:700;font-size:15.5px;margin-top:4px}
+  .book:hover{background:var(--blue-d)}
+  .redirect{font-size:12.5px;color:var(--muted);margin-top:12px}
+  .restart{display:block;margin:18px auto 0;background:none;border:0;color:var(--muted);font:inherit;cursor:pointer;text-decoration:underline}
+  footer.foot{max-width:640px;margin:0 auto;padding:0 22px 44px;color:var(--muted);font-size:12px;text-align:center;line-height:1.6}
+  :focus-visible{outline:3px solid rgba(62,111,181,.45);outline-offset:2px}
+  @media (max-width:560px){.home-head h1{font-size:26px}}
+  .fade{animation:fade .28s ease}@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1}}
+</style>
+</head>
+<body>
+<div class="demo-strip"><b>Concept prototype v2</b> — service list, restriction wording and eligibility rules are the practice-approved content for your review. Sample disaster data only.</div>
+
+<header class="site">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+      <path d="M24 42S6 31 6 18.5C6 12 10.5 8 16 8c3.4 0 6 1.8 8 4.6C26 9.8 28.6 8 32 8c5.5 0 10 4 10 10.5C42 31 24 42 24 42z" fill="#22386b"/>
+      <path d="M24 17v10M19 22h10" stroke="#eea836" stroke-width="3.4" stroke-linecap="round"/>
+    </svg>
+    <div class="wm"><div class="n"><span class="h">Hope</span><span class="m">Medics</span></div><div class="tag">TELEHEALTH · Care. Trust. Hope.</div></div>
+  </div>
+  <div class="callus">Need help now?<br><a href="tel:+61353323507">03 5332 3507</a></div>
+</header>
+
+<main>
+  <!-- HOME = service grid -->
+  <section id="s-home" class="fade">
+    <div class="home-head">
+      <h1>How can we help today?</h1>
+      <p>Choose what you need and we'll check your Medicare eligibility before you book.</p>
+    </div>
+    <div class="grid" id="serviceGrid"></div>
+    <div class="reassure"><span>Bulk billing</span><span>Open 7 days</span><span>Phone &amp; video</span></div>
+  </section>
+
+  <!-- ACKNOWLEDGEMENT -->
+  <section id="s-ack" style="display:none">
+    <div class="card">
+      <div class="prog"><i class="on"></i><i></i></div>
+      <p class="eyebrow">Please read before continuing</p>
+      <h2 id="ackTitle"></h2>
+      <div class="ackbox" id="ackText"></div>
+      <label class="ackcheck"><input type="checkbox" id="ackChk" onchange="document.getElementById('ack-next').disabled=!this.checked"><span>I understand and would like to continue.</span></label>
+      <div class="rowbtns"><button class="btn btn-ghost" onclick="goHome()">Back</button><button class="btn btn-primary" id="ack-next" disabled onclick="show('elig')">Continue</button></div>
+    </div>
+  </section>
+
+  <!-- ELIGIBILITY -->
+  <section id="s-elig" style="display:none">
+    <div class="card">
+      <div class="prog"><i class="done"></i><i class="on"></i></div>
+      <p class="eyebrow">Medicare eligibility</p>
+      <h2>A few quick questions</h2>
+      <p class="hint">Bulk-billed telehealth has specific Medicare rules. Your answers stay on this page.</p>
+
+      <div id="q-card">
+        <p class="grouplabel">Do you have a valid Medicare card?</p>
+        <div class="opts">
+          <button class="opt" onclick="pick('card',true,this)"><span class="mark"></span><span class="txt">Yes</span></button>
+          <button class="opt" onclick="pick('card',false,this)"><span class="mark"></span><span class="txt">No</span></button>
+        </div>
+      </div>
+
+      <div id="q-seen" style="display:none">
+        <p class="grouplabel">Have you had a face-to-face appointment at Hope Medics in the last 12 months?</p>
+        <div class="opts">
+          <button class="opt" onclick="pick('seen','yes',this)"><span class="mark"></span><span class="txt">Yes</span></button>
+          <button class="opt" onclick="pick('seen','no',this)"><span class="mark"></span><span class="txt">No</span></button>
+          <button class="opt" onclick="pick('seen','unsure',this)"><span class="mark"></span><span class="txt">I'm not sure</span></button>
+        </div>
+      </div>
+
+      <div id="q-exempt" style="display:none">
+        <p class="grouplabel">You may still qualify under a Medicare exemption. Does any of these apply?</p>
+        <div class="opts" id="exemptOpts"></div>
+        <div class="disaster" id="disasterBox">
+          <strong style="font-size:13.5px;color:var(--navy2)">Check your area</strong>
+          <p style="font-size:12.5px;color:var(--muted);margin:4px 0 0">We'll check your suburb/postcode against the government's declared disaster areas (Disaster Assist).</p>
+          <div class="row"><input id="dSuburb" placeholder="Suburb / locality" autocomplete="off"><input id="dPostcode" placeholder="Postcode" inputmode="numeric" autocomplete="off"><button class="btn btn-primary btn-sm" onclick="checkDisaster()">Check</button></div>
+          <p class="dhint" id="dHint"></p>
+          <div class="dresult" id="dResult"></div>
+        </div>
+      </div>
+
+      <div class="note">Demo logic: eligibility mirrors the public Medicare telehealth rules (recent face-to-face visit, or a listed exemption). Final criteria &amp; wording are provided by the practice.</div>
+      <div class="rowbtns"><button class="btn btn-ghost" onclick="backFromElig()">Back</button><button class="btn btn-primary" id="elig-next" disabled onclick="evaluateResult()">See my result</button></div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="s-result" style="display:none"><div class="card" id="resultCard"></div></section>
+</main>
+
+<footer class="foot">
+  Concept demonstration for internal review only. General information, not medical advice, and no patient data is stored.<br>
+  In an emergency call <strong>000</strong>. For non-urgent advice call healthdirect on <strong>1800 022 222</strong>.
+</footer>
+
+<script>
+  var HOTDOC="https://www.hotdoc.com.au/medical-centres/wendouree-VIC-3355/hope-medics/doctors";
+  var TICK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+  function byId(i){return document.getElementById(i);}
+  function el(t,c){var e=document.createElement(t);if(c)e.className=c;return e;}
+  function scrollTop(){try{window.scrollTo(0,0);}catch(e){}}
+
+  /* ===== CONFIG (in production loaded from config/*.json via the CMS) ===== */
+  var SERVICES=[
+    {key:"escript",label:"eScript / prescription",ex:"Repeat or new prescription",tint:"blue",icon:'<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',requiresAck:true,
+      ackTitle:"Before you continue \u2014 prescriptions",
+      ackText:"We do not prescribe medications of addiction or restricted medicines, including S4 and S8 medications.\n\nThis includes (but is not limited to) strong pain medications such as Panadeine Forte, Endone, Targin, Palexia, Temgesic and Norspan; benzodiazepines; ADHD medications; gabapentinoids such as Lyrica; antipsychotic medications such as quetiapine; and testosterone.\n\nSome medications may require an assessment before they can be prescribed. The decision to prescribe any medication is made at the discretion of the consulting practitioner based on your clinical circumstances.\n\nPlease do not proceed if you are specifically seeking any of the above or other restricted medicines. We also do not provide multiple repeats simply on request \u2014 the number of repeats, if any, is determined by the treating doctor based on your clinical needs."},
+    {key:"medcert",label:"Medical certificate",ex:"For work, study or carer's leave",tint:"gold",icon:'<path d="M6 3h9l3 3v15a0 0 0 0 1 0 0H6a0 0 0 0 1 0 0z"/><path d="M9 12l2 2 4-4"/>',requiresAck:true,
+      ackTitle:"Before you continue \u2014 medical certificates",
+      ackText:"Medical certificates can only be issued for circumstances that are appropriately assessed during your consultation. We do not provide backdated certificates or certificates covering dates before the day of your consultation.\n\nWe also do not provide medical certificates for:\n\u2022 Centrelink purposes\n\u2022 Cancelling bookings, events or appointments\n\u2022 Rescheduling or cancelling travel plans\n\u2022 Legal or court-related matters\n\nIf you require a medical certificate, the consulting doctor will determine whether one can be provided based on your consultation and clinical assessment."},
+    {key:"referral",label:"Referral letter",ex:"To a private specialist",tint:"green",icon:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',requiresAck:true,
+      ackTitle:"Before you continue \u2014 referral letters",
+      ackText:"Our telehealth service provides referral letters to private specialists only. We do not provide referral letters to public hospitals through this service.\n\nIf you require an urgent assessment at a public hospital, you should attend the appropriate emergency department or contact the relevant health service directly."},
+    {key:"general",label:"General consultation",ex:"A short telehealth consult",tint:"navy",icon:'<path d="M20 11.5a8 8 0 0 1-11.4 7.2L4 20l1.3-4.6A8 8 0 1 1 20 11.5z"/><path d="M9 11h.01M12 11h.01M15 11h.01"/>',requiresAck:false,ackTitle:"",ackText:""}
+  ];
+  var EXEMPTIONS=[
+    {key:"infant",label:"The patient is a child under 12 months old"},
+    {key:"homeless",label:"Currently experiencing homelessness"},
+    {key:"ams",label:"A patient of an Aboriginal Medical Service (AMS / ACCHS)"},
+    {key:"covid",label:"Isolating under a COVID-19 public health order"},
+    {key:"disaster",label:"Located in a declared natural disaster-affected area"}
+  ];
+  /* Sample only \u2014 production refreshes from Disaster Assist / data.gov.au */
+  var DISASTERS=[
+    {agrn:"1184",lga:"Hilltops (NSW)",hazard:"Severe weather & storms",start:"2025-01-10",end:"2026-12-31",postcodes:["2594","2586","2587"],suburbs:["young","boorowa","harden","murrumburrah"]},
+    {agrn:"1207",lga:"Wellington Shire (VIC)",hazard:"Flooding",start:"2026-06-01",end:"2026-12-31",postcodes:["3844","3850"],suburbs:["sale","traralgon","maffra"]}
+  ];
+
+  var state={service:null,card:null,seen:null,exemption:null,disasterMatch:null,disasterLabel:null};
+
+  /* build service tiles (tap = go straight in) */
+  var sg=byId("serviceGrid");
+  SERVICES.forEach(function(s){
+    var b=el("button","tile");b.type="button";
+    b.innerHTML='<span class="chip chip-'+s.tint+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+s.icon+'</svg></span><span class="lbl">'+s.label+'</span><span class="ex">'+s.ex+'</span>'+(s.requiresAck?'<span class="req">Please read a short notice</span>':'');
+    b.onclick=function(){chooseService(s);};
+    sg.appendChild(b);
+  });
+
+  var sections=["home","ack","elig","result"];
+  function show(id){sections.forEach(function(s){byId("s-"+s).style.display=(s===id)?"":"none";});var sec=byId("s-"+id);sec.classList.remove("fade");void sec.offsetWidth;sec.classList.add("fade");scrollTop();}
+  function goHome(){show("home");}
+  function chooseService(s){
+    state.service=s;
+    if(s.requiresAck){
+      byId("ackTitle").textContent=s.ackTitle;byId("ackText").textContent=s.ackText;
+      byId("ackChk").checked=false;byId("ack-next").disabled=true;show("ack");
+    } else { resetElig(); show("elig"); }
+  }
+  function backFromElig(){ show(state.service && state.service.requiresAck ? "ack" : "home"); }
+
+  function resetElig(){
+    state.card=null;state.seen=null;state.exemption=null;state.disasterMatch=null;
+    byId("q-seen").style.display="none";byId("q-exempt").style.display="none";
+    Array.prototype.forEach.call(document.querySelectorAll("#q-card .opt, #q-seen .opt"),function(x){x.classList.remove("sel");});
+    byId("exemptOpts").innerHTML="";byId("disasterBox").classList.remove("show");
+    byId("dSuburb").value="";byId("dPostcode").value="";byId("dResult").className="dresult";
+    byId("elig-next").disabled=true;
+  }
+  function pick(key,val,btn){
+    state[key]=val;
+    Array.prototype.forEach.call(btn.parentElement.children,function(x){x.classList.remove("sel");});
+    btn.classList.add("sel");
+    if(key==="card"){byId("q-seen").style.display=val?"":"none";byId("q-exempt").style.display="none";state.seen=null;state.exemption=null;}
+    if(key==="seen"){byId("q-exempt").style.display=(val==="yes")?"none":"";if(val!=="yes" && !byId("exemptOpts").children.length) buildExemptions();state.exemption=null;}
+    refresh();
+  }
+  function buildExemptions(){
+    var w=byId("exemptOpts");w.innerHTML="";
+    EXEMPTIONS.forEach(function(x){
+      var b=el("button","opt");b.type="button";
+      b.innerHTML='<span class="mark">'+TICK+'</span><span class="txt">'+x.label+'</span>';
+      b.onclick=function(){
+        state.exemption=x.key;state.disasterMatch=null;
+        Array.prototype.forEach.call(w.children,function(y){y.classList.remove("sel");});b.classList.add("sel");
+        var db=byId("disasterBox");
+        if(x.key==="disaster"){db.classList.add("show");byId("dHint").textContent="Sample data \u2014 try postcode 2594 or suburb \u201CYoung\u201D to see a match.";byId("dResult").className="dresult";}
+        else{db.classList.remove("show");}
+        refresh();
+      };
+      w.appendChild(b);
+    });
+    var none=el("button","opt");none.type="button";
+    none.innerHTML='<span class="mark">'+TICK+'</span><span class="txt">None of these apply</span>';
+    none.onclick=function(){state.exemption="none";state.disasterMatch=null;Array.prototype.forEach.call(w.children,function(y){y.classList.remove("sel");});none.classList.add("sel");byId("disasterBox").classList.remove("show");refresh();};
+    w.appendChild(none);
+  }
+  function checkDisaster(){
+    var sub=(byId("dSuburb").value||"").trim().toLowerCase();
+    var pc=(byId("dPostcode").value||"").trim();
+    var today=new Date().toISOString().slice(0,10);var hit=null;
+    DISASTERS.forEach(function(d){
+      var inArea=(pc && d.postcodes.indexOf(pc)>-1) && (sub && d.suburbs.indexOf(sub)>-1);
+      if(inArea && today>=d.start && today<=d.end) hit=d;
+    });
+    var r=byId("dResult");
+    if(hit){state.disasterMatch=true;state.disasterLabel=hit.lga;r.className="dresult ok";r.innerHTML="\u2713 "+hit.lga+" is in a declared disaster area ("+hit.hazard+", AGRN "+hit.agrn+"). You may be <strong>potentially eligible</strong> \u2014 the practice will confirm.";}
+    else{state.disasterMatch=false;r.className="dresult no";r.innerHTML="We couldn't match your area to a current declared disaster. If you believe this is incorrect, the practice can check for you.";}
+    refresh();
+  }
+  function refresh(){
+    var ready=false;
+    if(state.card===false) ready=true;
+    else if(state.card===true && state.seen==="yes") ready=true;
+    else if(state.card===true && (state.seen==="no"||state.seen==="unsure") && state.exemption){
+      ready = state.exemption==="disaster" ? (state.disasterMatch!==null) : true;
+    }
+    byId("elig-next").disabled=!ready;
+  }
+  function evaluateResult(){
+    var kind,exLabel="";
+    if(state.card===false) kind="warn";
+    else if(state.seen==="yes") kind="ok";
+    else if(state.exemption==="none"||!state.exemption) kind="warn";
+    else if(state.exemption==="disaster"){kind=state.disasterMatch?"maybe":"warn";exLabel="natural disaster area";}
+    else{kind="maybe";var ex=EXEMPTIONS.filter(function(x){return x.key===state.exemption;})[0];exLabel=ex?ex.label.toLowerCase():"an exemption";}
+    renderResult(kind,exLabel);show("result");
+  }
+  function big(t){var s='<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">';if(t==="ok")return s+'<path d="M20 6 9 17l-5-5"/></svg>';return s+'<circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg>';}
+  function li(){return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';}
+  function renderResult(kind,exLabel){
+    var c=byId("resultCard");c.className="card";
+    var chip=state.service?'<div class="rchip">'+state.service.label+'</div>':"";
+    if(kind==="ok"){
+      c.innerHTML='<div class="result r-ok"><div class="rico">'+big("ok")+'</div>'+chip+'<h2>You look eligible for bulk-billed telehealth</h2><p class="msg">Based on your answers you may qualify. The practice confirms your eligibility before the consult.</p><a class="book" href="'+HOTDOC+'" target="_blank" rel="noopener">Book via HotDoc &rarr;</a><p class="redirect">You\u2019ll be taken to the HotDoc booking pathway for this service.</p><button class="restart" onclick="goHome()">Start over</button></div>';
+    } else if(kind==="maybe"){
+      c.innerHTML='<div class="result r-maybe"><div class="rico">'+big("maybe")+'</div>'+chip+'<h2>You may be eligible under an exemption</h2><p class="msg">You indicated: <strong>'+exLabel+'</strong>. This looks like it may meet a Medicare telehealth exemption \u2014 the practice will confirm before your appointment.</p><a class="book" href="'+HOTDOC+'" target="_blank" rel="noopener">Book via HotDoc &rarr;</a><p class="redirect">Your eligibility will be confirmed by the practice.</p><button class="restart" onclick="goHome()">Start over</button></div>';
+    } else {
+      c.innerHTML='<div class="result r-warn"><div class="rico">'+big("warn")+'</div>'+chip+'<h2>You may not be eligible for bulk-billed telehealth</h2><p class="msg">Bulk-billed telehealth needs a valid Medicare card and either a recent face-to-face visit or a listed exemption. You can still get care:</p><ul class="altlist"><li>'+li()+'<span><strong>Book an in-person appointment</strong> at Hope Medics to get started.</span></li><li>'+li()+'<span><strong>Call the practice</strong> on 03 5332 3507 to talk through options.</span></li><li>'+li()+'<span><strong>Ask about a private telehealth consult</strong> (a fee may apply).</span></li></ul><a class="book" href="'+HOTDOC+'" target="_blank" rel="noopener" style="margin-top:14px">Book an appointment &rarr;</a><button class="restart" onclick="goHome()">Start over</button></div>';
+    }
+  }
+</script>
+</body>
+</html>
