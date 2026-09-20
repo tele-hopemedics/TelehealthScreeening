@@ -203,7 +203,7 @@
   function scrollTop(){try{window.scrollTo(0,0);}catch(e){}}
 
   /* ===== CONFIG (in production loaded from config/*.json via the CMS) ===== */
-  var SERVICES=[
+  var BUNDLED_SERVICES=[
     {key:"escript",label:"eScript / prescription",ex:"Repeat or new prescription",tint:"blue",icon:'<rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',requiresAck:true,
       ackTitle:"Before you continue \u2014 prescriptions",
       ackText:"We do not prescribe medications of addiction or restricted medicines, including S4 and S8 medications.\n\nThis includes (but is not limited to) strong pain medications such as Panadeine Forte, Endone, Targin, Palexia, Temgesic and Norspan; benzodiazepines; ADHD medications; gabapentinoids such as Lyrica; antipsychotic medications such as quetiapine; and testosterone.\n\nSome medications may require an assessment before they can be prescribed. The decision to prescribe any medication is made at the discretion of the consulting practitioner based on your clinical circumstances.\n\nPlease do not proceed if you are specifically seeking any of the above or other restricted medicines. We also do not provide multiple repeats simply on request \u2014 the number of repeats, if any, is determined by the treating doctor based on your clinical needs."},
@@ -231,13 +231,35 @@
   var state={service:null,card:null,seen:null,exemption:null,disasterMatch:null,disasterLabel:null};
 
   /* build service tiles (tap = go straight in) */
-  var sg=byId("serviceGrid");
+  /* var sg=byId("serviceGrid");
   SERVICES.forEach(function(s){
     var b=el("button","tile");b.type="button";
     b.innerHTML='<span class="chip chip-'+s.tint+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+s.icon+'</svg></span><span class="lbl">'+s.label+'</span><span class="ex">'+s.ex+'</span>'+(s.requiresAck?'<span class="req">Please read a short notice</span>':'');
     b.onclick=function(){chooseService(s);};
     sg.appendChild(b);
-  });
+  }); */
+
+    /* build service tiles (tap = go straight in) */
+  var SERVICES = BUNDLED_SERVICES;   // used until (or if) the JSON loads
+  var sg = byId("serviceGrid");
+
+  function buildTiles(){
+    sg.innerHTML = "";
+    SERVICES.forEach(function(s){
+      var b = el("button","tile"); b.type = "button";
+      b.innerHTML = '<span class="chip chip-'+(s.tint||'blue')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+(s.icon||'')+'</svg></span>'
+        + '<span class="lbl">'+s.label+'</span><span class="ex">'+(s.ex||'')+'</span>'
+        + (s.requiresAck ? '<span class="req">Please read a short notice</span>' : '');
+      b.onclick = function(){ chooseService(s); };
+      sg.appendChild(b);
+    });
+  }
+
+  fetch('content/services.json', { cache:'no-store' })
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){ if(d && d.services && d.services.length) SERVICES = d.services; })
+    .catch(function(){ /* opened via file:// or file missing → keep bundled defaults */ })
+    .then(buildTiles);
 
   var sections=["home","ack","elig","result"];
   function show(id){sections.forEach(function(s){byId("s-"+s).style.display=(s===id)?"":"none";});var sec=byId("s-"+id);sec.classList.remove("fade");void sec.offsetWidth;sec.classList.add("fade");scrollTop();}
