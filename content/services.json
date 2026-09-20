@@ -1,44 +1,44 @@
 {
   "services": [
     {
-      "key": "escript",
       "label": "eScript / prescription",
       "ex": "Repeat or new prescription",
-      "tint": "blue",
-      "icon": "<rect x=\"6\" y=\"3\" width=\"12\" height=\"18\" rx=\"2\"/><path d=\"M9 8h6M9 12h6M9 16h3\"/>",
       "requiresAck": true,
-      "ackTitle": "Before you continue \u2014 prescriptions",
-      "ackText": "We do not prescribe medications of addiction or restricted medicines, including S4 and S8 medications.\n\nThis includes (but is not limited to) strong pain medications such as Panadeine Forte, Endone, Targin, Palexia, Temgesic and Norspan; benzodiazepines; ADHD medications; gabapentinoids such as Lyrica; antipsychotic medications such as quetiapine; and testosterone.\n\nSome medications may require an assessment before they can be prescribed. The decision to prescribe any medication is made at the discretion of the consulting practitioner based on your clinical circumstances.\n\nPlease do not proceed if you are specifically seeking any of the above or other restricted medicines. We also do not provide multiple repeats simply on request \u2014 the number of repeats, if any, is determined by the treating doctor based on your clinical needs."
+      "ackTitle": "Before you continue — prescriptions",
+      "ackText": "We do not prescribe medications of addiction or restricted medicines, including S4 and S8 medications.\n\nThis includes (but is not limited to) strong pain medications such as Panadeine Forte, Endone, Targin, Palexia, Temgesic and Norspan; benzodiazepines; ADHD medications; gabapentinoids such as Lyrica; antipsychotic medications such as quetiapine; and testosterone.\n\nSome medications may require an assessment before they can be prescribed. The decision to prescribe any medication is made at the discretion of the consulting practitioner based on your clinical circumstances.\n\nPlease do not proceed if you are specifically seeking any of the above or other restricted medicines. We also do not provide multiple repeats simply on request — the number of repeats, if any, is determined by the treating doctor based on your clinical needs.",
+      "key": "escript",
+      "tint": "blue",
+      "icon": "<rect x=\"6\" y=\"3\" width=\"12\" height=\"18\" rx=\"2\"/><path d=\"M9 8h6M9 12h6M9 16h3\"/>"
     },
     {
-      "key": "medcert",
       "label": "Medical certificate",
       "ex": "For work, study or carer's leave",
-      "tint": "gold",
-      "icon": "<path d=\"M6 3h9l3 3v15H6z\"/><path d=\"M9 12l2 2 4-4\"/>",
       "requiresAck": true,
-      "ackTitle": "Before you continue \u2014 medical certificates",
-      "ackText": "Medical certificates can only be issued for circumstances that are appropriately assessed during your consultation. We do not provide backdated certificates or certificates covering dates before the day of your consultation.\n\nWe also do not provide medical certificates for:\n\u2022 Centrelink purposes\n\u2022 Cancelling bookings, events or appointments\n\u2022 Rescheduling or cancelling travel plans\n\u2022 Legal or court-related matters\n\nIf you require a medical certificate, the consulting doctor will determine whether one can be provided based on your consultation and clinical assessment."
+      "ackTitle": "Before you continue — medical certificates",
+      "ackText": "Medical certificates can only be issued for circumstances that are appropriately assessed during your consultation. We do not provide backdated certificates or certificates covering dates before the day of your consultation.\n\nWe also do not provide medical certificates for:\n• Centrelink purposes\n• Cancelling bookings, events or appointments\n• Rescheduling or cancelling travel plans\n• Legal or court-related matters\n\nIf you require a medical certificate, the consulting doctor will determine whether one can be provided based on your consultation and clinical assessment.",
+      "key": "medcert",
+      "tint": "gold",
+      "icon": "<path d=\"M6 3h9l3 3v15H6z\"/><path d=\"M9 12l2 2 4-4\"/>"
     },
     {
-      "key": "referral",
       "label": "Referral letter",
       "ex": "To a private specialist",
-      "tint": "green",
-      "icon": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"M3 7l9 6 9-6\"/>",
       "requiresAck": true,
-      "ackTitle": "Before you continue \u2014 referral letters",
-      "ackText": "Our telehealth service provides referral letters to private specialists only. We do not provide referral letters to public hospitals through this service.\n\nIf you require an urgent assessment at a public hospital, you should attend the appropriate emergency department or contact the relevant health service directly."
+      "ackTitle": "Before you continue — referral letters",
+      "ackText": "Our telehealth service provides referral letters to private specialists only. We do not provide referral letters to public hospitals through this service.\n\nIf you require an urgent assessment at a public hospital, you should attend the appropriate emergency department or contact the relevant health service directly.",
+      "key": "referral",
+      "tint": "green",
+      "icon": "<rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"M3 7l9 6 9-6\"/>"
     },
     {
-      "key": "general",
-      "label": "General consultation",
+      "label": "This is a new General consultation",
       "ex": "A short telehealth consult",
-      "tint": "navy",
-      "icon": "<path d=\"M20 11.5a8 8 0 0 1-11.4 7.2L4 20l1.3-4.6A8 8 0 1 1 20 11.5z\"/><path d=\"M9 11h.01M12 11h.01M15 11h.01\"/>",
       "requiresAck": false,
       "ackTitle": "",
-      "ackText": ""
+      "ackText": "",
+      "key": "general",
+      "tint": "navy",
+      "icon": "<path d=\"M20 11.5a8 8 0 0 1-11.4 7.2L4 20l1.3-4.6A8 8 0 1 1 20 11.5z\"/><path d=\"M9 11h.01M12 11h.01M15 11h.01\"/>"
     }
   ]
 }
